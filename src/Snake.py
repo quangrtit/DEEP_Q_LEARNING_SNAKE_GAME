@@ -26,6 +26,7 @@ class Snake:
         self.y_food = random.randint(0, DIS_HEIGHT - BLOCK_SIZE) // BLOCK_SIZE * BLOCK_SIZE
         self.x_change = BLOCK_SIZE
         self.y_change = 0
+        self.fps = FRAMESPEED
         self.size = 1 # score = self.size - 1
         self.covert_action = {
             0: "left", 
@@ -45,6 +46,7 @@ class Snake:
             self.y_change == -BLOCK_SIZE, 
             self.y_change == BLOCK_SIZE,
             # danger
+            (x_head, y_head) in self.snake[:-1],
             x_head < 0, 
             x_head >= DIS_WIDTH,
             y_head < 0,
@@ -105,7 +107,7 @@ class Snake:
         self.display.blit(value, [0, 0])  
 
         pygame.display.update()
-        self.clock.tick(FRAMESPEED)
+        self.clock.tick(self.fps)
     def act(self):
         return numpy.random.randint(0, 3)
     def close_game(self):
@@ -114,6 +116,8 @@ class Snake:
         pygame.quit()
     def delay_game(self, time=1000):
         pygame.time.delay(time)
+    def change_fps(self, fps):
+        self.fps = fps
 if __name__ == "__main__":
     pass
 

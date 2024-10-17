@@ -19,8 +19,8 @@ class Agent:
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.replay_buffer = deque(maxlen=replay_size)
         
-        self.main_NN = dn.NN(12, 4).to(self.device)
-        self.target_NN = dn.NN(12, 4).to(self.device)
+        self.main_NN = dn.NN(13, 4).to(self.device)
+        self.target_NN = dn.NN(13, 4).to(self.device)
         self.criterion = nn.MSELoss()
         self.optimizer_main = optim.Adam(self.main_NN.parameters(), lr=self.learning_rate)
         self.update_target_NN()

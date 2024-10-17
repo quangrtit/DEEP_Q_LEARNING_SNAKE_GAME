@@ -1,13 +1,16 @@
 from src import Snake, Agent
-
-def train_model(epochs=200):
+import numpy as np
+def train_model(epochs=300):
     environment = Snake()
-    agent = Agent(0.001, 1.0, 0.95, 0.1, 0.99, 64, 1000000)
+    environment.change_fps(500)
+    agent = Agent(0.001, 1.0, 1.0/100, 0.0, 0.99, 64, 1000000)
     best_score = 0
+    avg_score = 0
+    score_history = []
     for i in range(epochs):
         state = environment.reset()
         time_step = 0
-        while time_step < 10000:
+        while time_step < 50000:
             # action = environment.act()
             action = agent.choose_action(state)
             next_state, reward, done, score = environment.step(action)
@@ -21,12 +24,14 @@ def train_model(epochs=200):
                 if score > best_score: 
                     best_score = score
                     agent.save_model("bach_duong_best.pth")
-                print("epochs:", i, "score:", score - 1)
+                avg_score = np.mean(score_history[-50:])
+                print("epochs:", i, "score:", score - 1, "avg_score:", avg_score, "best_score:", best_score,  "epsilon:", agent.epsilon)
                 break
             agent.train_one_bacth()
-        agent.epsilon = min(agent.epsilon_min, agent.epsilon * agent.epsilon_decay)
-        if i > 1000: 
-            agent.epsilon_min = 0.0
+        agent.epsilon = max(agent.epsilon_min, agent.epsilon - agent.epsilon_decay)
+        score_history.append(score)
+        # if i > 1000: 
+        #     agent.epsilon_min = 0.0
     agent.save_model("anh_quang.pth")
     environment.close_game()
 if __name__ == "__main__":
