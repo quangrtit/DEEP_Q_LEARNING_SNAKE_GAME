@@ -15,18 +15,19 @@ BLUE = (50, 153, 213)
 pygame.init()
 class Snake:
     def __init__(self):
+        self.fps = FRAMESPEED
         self.reset()
     def reset(self):
         self.clock = pygame.time.Clock() 
         self.display = pygame.display.set_mode((DIS_WIDTH, DIS_HEIGHT))
-        pygame.display.set_caption("ANH QUẢNG")
+        pygame.display.set_caption("QUẢNG")
         x_head, y_head = 4 * BLOCK_SIZE, 4 * BLOCK_SIZE
         self.snake = [(x_head, y_head)]
         self.x_food = random.randint(0, DIS_WIDTH - BLOCK_SIZE) // BLOCK_SIZE * BLOCK_SIZE
         self.y_food = random.randint(0, DIS_HEIGHT - BLOCK_SIZE) // BLOCK_SIZE * BLOCK_SIZE
         self.x_change = BLOCK_SIZE
         self.y_change = 0
-        self.fps = FRAMESPEED
+        # self.fps = FRAMESPEED
         self.size = 1 # score = self.size - 1
         self.covert_action = {
             0: "left", 
